@@ -68,7 +68,8 @@ def get_segment(x):
       else:
              segment = '4'
 
-      return "SINGLE_PRODUCT; "+("; ").join(location)+ "; "+(property_type)+";segments "+str(segment)+""
+     # return "SINGLE_PRODUCT; "+("; ").join(location)+ "; "+(property_type)+";segments "+str(segment)+""
+      return "SINGLE_PRODUCT; "+("; ").join(location)+ "; "+(property_type)+";segments "+str(segment)+"".replace(";;"," ;")
 
 
 def generate_dynamic_template(df, cityName=''):
