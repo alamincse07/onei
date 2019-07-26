@@ -9,7 +9,7 @@ date=$(date '+%Y-%m-%d')
 
 sudo chmod 777 -R $(pwd)/data
 
-cp $(pwd)/data  $(pwd)/$date
+cp -R $(pwd)/data  $(pwd)/$date
 
 cd $(pwd)/data
 find . -name "*.html" -exec rm -rf {} \;
