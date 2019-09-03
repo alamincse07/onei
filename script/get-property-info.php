@@ -123,7 +123,7 @@ function GetAndPrepareData($file_no){
         $item['price']=$match[0];
         # print($item['price'].'--');
         // get details
-        $item['url'] = 'https://www.oneillhomes.ca'.trim($article->find('.property-thumb a', 0)->href).'?medium=dynamic_campaign_feed';
+          $item['url'] = 'https://www.oneillhomes.ca/property/'.$item['id'].'?medium=dynamic_campaign_feed';
         // get intro
         $item['image'] = trim($article->find('.property-thumb img', 0)->src);
         if(!strstr($item['image'],'http')){ $item['image'] = 'https://www.oneillhomes.ca'.$item['image'] ;}
