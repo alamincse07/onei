@@ -1,17 +1,24 @@
 <?php
 include_once('simple_html_dom.php');
 
+$system_args = getopt('c:');
+if(isset($system_args['c'])) {
+    $city = $system_args['c'];
+} else {
+    print("Missing city name `c`\n");
+    die;
+}
+
 function scraping_digg($page=1) {
-    // create HTML DOM
-    // $html = file_get_html('http://digg.com/');
+
 
     ini_set("memory_limit",-1);
    // $url='https://www.oneillhomes.ca/search/results/?page='.$page;
    
-    $url='https://www.oneillhomes.ca/search/results/?city=North+Vancouver&page='.$page;
+    $url="https://www.oneillhomes.ca/search/results/?city=$city&page=$page";
    
    
-    $path= dirname(__FILE__).'/../data/page-contents/'.$page.'.html';
+    $path= dirname(__FILE__)."/../data/$city/page-contents/$page.html";
     //$path= $page.'html';
     
     $html = @file_get_html($url);
@@ -64,7 +71,7 @@ function data(){
         $item['description'] = trim($article->find('.property-description', 0)->plaintext);
         $item['price'] = str_replace(["$",","],"",trim($article->find('.price', 0)->plaintext));
         // get details
-        $item['url'] = 'https://www.oneillhomes.ca'.trim($article->find('.property-thumb a', 0)->href);
+        $item['url'] = 'https://www.oneillhomes.ca/property/'.$item['id'];
         // get intro
         $item['image'] = trim($article->find('.property-thumb img', 0)->src);
         $features = $article->find('.featured-details ul li');
@@ -100,10 +107,7 @@ function data(){
 }
 
 
-// -----------------------------------------------------------------------------
-// test it!
 
-// "http://digg.com" will check user_agent header...
 ini_set('user_agent', 'My-Application/2.5');
 
 

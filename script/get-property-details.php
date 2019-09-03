@@ -1,19 +1,23 @@
 <?php
 include_once('simple_html_dom.php');
 
-function scraping_page($url='',$id='') {
-    // create HTML DOM
-    // $html = file_get_html('http://digg.com/');
 
-   // $url='https://www.oneillhomes.ca/search/details/8b/7/';
+$system_args = getopt('c:');
+if(isset($system_args['c'])) {
+    $city = $system_args['c'];
+} else {
+    print("Missing city name `c`\n");
+    die;
+}
+
+function scraping_page($url='',$id='') {
+
     ini_set("memory_limit",-1);
    
-     $path= dirname(__FILE__).'/../data/details-page-contents/'.$id.'.html';
+     $path= dirname(__FILE__).'/../data/'. $city.'/details-page-contents/'.$id.'.html';
     //$path= $page.'html';
     
     $html = @file_get_html($url);
-    //print strlen($html);
-      $path= dirname(__FILE__).'/../data/details-page-contents/'.$id.'.html';
     @file_put_contents($path,$html);
     
 
@@ -25,7 +29,7 @@ function scraping_page($url='',$id='') {
 
 function GetAndPrepareData($file_no){
 
-     $file= dirname(__FILE__).'/../data/page-contents/'.$file_no.'.html';
+     $file= dirname(__FILE__).'/../data/'. $city.'/page-contents/'.$file_no.'.html';
     
     $html= file_get_contents($file);
     $html2 = str_get_html($html);
@@ -73,9 +77,7 @@ function GetAndPrepareData($file_no){
         $item['description'] = trim($article->find('.property-description', 0)->plaintext);
         $item['price'] = str_replace(["$",","],"",trim($article->find('.price', 0)->plaintext));
         $item['price']  = preg_replace("/[^0-9.]/", "", $item['price'] );
-        // get details
-        $item['url'] = 'https://www.oneillhomes.ca'.trim($article->find('.property-thumb a', 0)->href).'?origin=campaign';
-        // get intro
+        $item['url'] = 'https://www.oneillhomes.ca/property/'.$item['id'];  // get intro
         $item['image'] = trim($article->find('.property-thumb img', 0)->src);
         if(!strstr($item['image'],'http')){ $item['image'] = 'https://www.oneillhomes.ca'.$item['image'] ;}
         $features = $article->find('.featured-details ul li');
@@ -120,7 +122,7 @@ function GetAndPrepareData($file_no){
     #print_r($ret);die;
 
 
-    file_put_contents(dirname(__FILE__).'/../data/properties/'.$file_no.'.json',json_encode($ret));
+    file_put_contents(dirname(__FILE__).'/../data/'. $city.'/properties/'.$file_no.'.json',json_encode($ret));
     unset( $ret);
     return 1;
 }
@@ -135,7 +137,7 @@ ini_set('user_agent', 'My-Application/2.5');
 
 $page=860;
 
-$i=828;
+$i=1;
 
 while($i <= $page ){
 

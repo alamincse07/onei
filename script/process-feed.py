@@ -1,8 +1,18 @@
 import pandas as pd
 import json
 
+options, remainder = getopt.getopt(sys.argv[1:], 'c:v', ['city=', ])
 
-merged_data = pd.read_csv('nv-data.csv')
+city_name = ''
+for opt, arg in options:
+    if opt in ('-c', '--city'):
+        city_name = arg
+
+if len(city_name) < 2:
+    print("No city found")
+    exit()
+
+merged_data = pd.read_csv(city_name.replace(" ", "-")+'.csv')
 
 
 ## strip left right space
@@ -86,15 +96,8 @@ def generate_dynamic_template(df, cityName=''):
    # template['id'] = df['id']
     template['Custom label'] = df.apply(get_segment,axis=1)
 
-#      template[['Page URL', 'Custom label']] = read_csv.apply(
-#          lambda x: pd.Series(
-#              generate_label(x['display'], x['categories'], x['price_selected_currency'], x['star_rating'],
-#                             x['feed'], x['property_type'], x['country_code'], x['id'], x['archived'],
-#                             x['property_name_de'])), axis=1)
-    template.to_csv(selected_city.replace(
-        " ", "-").lower()+'-feed.csv', index=False)
+    template.to_csv(selected_city.replace(" ", "-").lower()+'-feed.csv', index=False)
 
 
-selected_city = 'North Vancouver'
 
-generate_dynamic_template(merged_data, selected_city)
+generate_dynamic_template(merged_data, city_name)

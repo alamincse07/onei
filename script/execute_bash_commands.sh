@@ -23,15 +23,15 @@ cd $dir/script
 
 filename=$(basename "$0")
 
-php get-contents.php
+php get-contents.php -c "north vancouver"
 
 print "content fetch done"
 
-php get-property-info.php
+php get-property-info.php -c "north vancouver"
 
-python feed.py
+python feed.py -c "north vancouver"
 
-python process-feed.py
+python process-feed.py -c "north vancouver"
 
 echo "done"
 
