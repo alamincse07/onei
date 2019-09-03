@@ -4,6 +4,7 @@ include_once('simple_html_dom.php');
 $system_args = getopt('c:');
 if(isset($system_args['c'])) {
     $city = $system_args['c'];
+    
 } else {
     print("Missing city name `c`\n");
     die;
@@ -11,14 +12,15 @@ if(isset($system_args['c'])) {
 
 function scraping_digg($page=1) {
 
-
+    global $city;
     ini_set("memory_limit",-1);
    // $url='https://www.oneillhomes.ca/search/results/?page='.$page;
    
-    $url="https://www.oneillhomes.ca/search/results/?city=$city&page=$page";
+    $url="https://www.oneillhomes.ca/search/results/?city=".urlencode($city)."&page=$page";
    
+    print($url);
    
-    $path= dirname(__FILE__)."/../data/$city/page-contents/$page.html";
+    $path= dirname(__FILE__)."/../data/".str_replace(" ","-",$city)."/page-contents/$page.html";
     //$path= $page.'html';
     
     $html = @file_get_html($url);
@@ -111,10 +113,11 @@ function data(){
 ini_set('user_agent', 'My-Application/2.5');
 
 
-$page=100;
+$page=5;
 
 $i=1;
 
+print " \nProcess listing data collection for $city\n";
 while($i < $page ){
 
    

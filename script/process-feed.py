@@ -1,6 +1,7 @@
 import pandas as pd
 import json
-
+import getopt
+import sys
 options, remainder = getopt.getopt(sys.argv[1:], 'c:v', ['city=', ])
 
 city_name = ''
@@ -17,8 +18,6 @@ merged_data = pd.read_csv(city_name.replace(" ", "-")+'.csv')
 
 ## strip left right space
 merged_data = merged_data.applymap(lambda x: x.strip() if isinstance(x, str) else x)
-
-
 
 
 def generate_feed_template(df,cityName=''):
@@ -96,7 +95,8 @@ def generate_dynamic_template(df, cityName=''):
    # template['id'] = df['id']
     template['Custom label'] = df.apply(get_segment,axis=1)
 
-    template.to_csv(selected_city.replace(" ", "-").lower()+'-feed.csv', index=False)
+    template.to_csv(cityName.replace(" ", "-").lower() +
+                    '-feed.csv', index=False)
 
 
 

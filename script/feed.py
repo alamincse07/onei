@@ -1,7 +1,8 @@
 import pandas as pd
 import json
 from glob import glob
-
+import getopt
+import sys
 options, remainder = getopt.getopt(sys.argv[1:], 'c:v', ['city=', ])
 
 city_name = ''
@@ -12,7 +13,7 @@ for opt, arg in options:
 if len(city_name) < 2:
     print("No city found")
     exit()
-filenames = glob('../data/'+city_name+'/properties/*.json')
+filenames = glob('../data/'+city_name.replace(" ","-")+'/properties/*.json')
 
 def processjson(f):
     with open(f) as fo:

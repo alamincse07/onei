@@ -1,18 +1,28 @@
 <?php
 include_once('simple_html_dom.php');
 
-function scraping_page($url='',$id='') {
-    // create HTML DOM
-    // $html = file_get_html('http://digg.com/');
 
-   // $url='https://www.oneillhomes.ca/search/details/8b/7/';
+
+$system_args = getopt('c:');
+if(isset($system_args['c'])) {
+    $city = $system_args['c'];
+} else {
+    print("Missing city name `c`\n");
+    die;
+}
+
+
+function scraping_page($url='',$id='') {
+   
+    global $city;
     ini_set("memory_limit",-1);
    
     $val=[];
     
     $html = @file_get_html($url);
      $html2 = str_get_html($html);
-    $path= dirname(__FILE__).'/../data/details-page-contents/'.$id.'.html';
+     
+    $path= dirname(__FILE__).'/../data/'.str_replace(" ","-",$city).'/details-page-contents/'.$id.'.html';
     @file_put_contents($path,$html);
     
      if(strlen($html) < 300){ return [];}
@@ -55,7 +65,8 @@ function scraping_page($url='',$id='') {
 
 function GetAndPrepareData($file_no){
 
-     $file= dirname(__FILE__).'/../data/page-contents/'.$file_no.'.html';
+        global $city;
+     $file = dirname(__FILE__).'/../data/'.str_replace(" ","-",$city).'/page-contents/'.$file_no.'.html';
     
      if(file_exists($file)){}else{ return 0;}
 
@@ -159,7 +170,7 @@ function GetAndPrepareData($file_no){
 
 
    if(count($ret)>0){
-    file_put_contents(dirname(__FILE__).'/../data/properties/'.$file_no.'.json',json_encode($ret));
+    file_put_contents(dirname(__FILE__).'/../data/'.str_replace(" ","-",$city).'/properties/'.$file_no.'.json',json_encode($ret));
     
    }
    unset( $ret);
@@ -177,6 +188,8 @@ ini_set('user_agent', 'My-Application/2.5');
 $page=100;
 
 $i=1;
+
+print " \nProcess listing data collection for $city\n";
 
 while($i <= $page ){
 
