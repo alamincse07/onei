@@ -150,7 +150,7 @@ function GetAndPrepareData($file_no){
 
              if(!empty($item['id'])){
 
-                $item['url'] = 'https://www.oneillhomes.ca/property/'.$item['id'].'?medium=dynamic_campaign_feed';
+                $item['url'] = 'https://www.oneillhomes.ca/property/'.$item['id'].'/?medium=dynamic_campaign_feed';
      
              }
           
