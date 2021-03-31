@@ -1,6 +1,6 @@
 requests==2.22.0
 
-lxml==4.3.3
+lxml==4.6.3
 python-slugify==3.0.2
 boto3==1.9.151
 numpy==1.16.3
